@@ -5,25 +5,92 @@
     <title>Title</title>
     <style>
         .cell {
-            fill: LightGray
+            fill: #FFC300;
         }
         .circ {
             fill: Black;
-            opacity: 0
+            opacity: 0;
+            stroke : Black;
+            stroke-width: 1;
         }
         .circ:hover {
-            fill: Black;
-            opacity: 100
+            opacity: 100;
+            transition: opacity .2s ease-out;
         }
 
     </style>
 </head>
 <body>
-<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-        <rect class="cell" x="0" y="0" width="50" height="50"></rect>
-        <circle class="circ" cx="25" cy="25" r="24" stroke="black" stroke-width="1"></circle>
-        <rect class="cell" x="50" y="00" width="50" height="50"></rect>
-        <circle class="circ" cx="75" cy="25" r="24" stroke="black" stroke-width="1"></circle>
-</svg>
+    <svg id="board" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    </svg>
+
+    <script type="text/javascript">
+        var size = 7;
+        var rows = 19;
+        var cols = 19;
+        var board = document.querySelector('#board');
+
+        // draw board
+        var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute("class", "cell");
+        rect.setAttribute("x", 0);
+        rect.setAttribute("y", 0);
+        rect.setAttribute("width", size * cols);
+        rect.setAttribute("height", size * rows);
+        var cell = board.appendChild(rect);
+
+        // draw vertical lines
+        for (var i = 0; i < cols; i++) {
+            var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute("x1", i * size + size / 2);
+            line.setAttribute("y1", size / 2);
+            line.setAttribute("x2", i * size + size / 2);
+            line.setAttribute("y2", size * (cols - 1) + size / 2);
+            line.setAttribute("stroke", "Black");
+            line.setAttribute("stroke-width", "0.2");
+            board.appendChild(line);
+        }
+
+        // draw vertical lines
+        for (var i = 0; i < rows; i++) {
+            var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute("y1", i * size + size / 2);
+            line.setAttribute("x1", size / 2);
+            line.setAttribute("y2", i * size + size / 2);
+            line.setAttribute("x2", size * (cols - 1) + size / 2);
+            line.setAttribute("stroke", "Black");
+            line.setAttribute("stroke-width", "0.2");
+            board.appendChild(line);
+        }
+
+        // draw star points
+        function addMarker(i, j) {
+            var star = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            star.setAttribute("cx", i * size + size / 2);
+            star.setAttribute("cy", j * size + size / 2);
+            star.setAttribute("r", 1 );
+            board.appendChild(star);
+        }
+        addMarker(3, 3);
+        addMarker(3, 15);
+        addMarker(3, 9);
+        addMarker(9, 3);
+        addMarker(9, 15);
+        addMarker(15, 3);
+        addMarker(15, 9);
+        addMarker(15, 15);
+
+        // creates cells
+        for (var i = 0; i < rows; i++) {
+            for (var j = 0; j < cols; j++) {
+                var stone = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                stone.setAttribute("class", "circ");
+                stone.setAttribute("cx", i * size + size / 2);
+                stone.setAttribute("cy", j * size + size / 2);
+                stone.setAttribute("r", size / 2 - 1);
+                var cell = board.appendChild(stone);
+            }
+        }
+    </script>
 </body>
 </html>
