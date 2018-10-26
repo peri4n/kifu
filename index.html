@@ -8,14 +8,12 @@
             fill: #FFC300;
         }
         .circ {
-            fill: Black;
+            fill: url(#blackGradient);
             opacity: 0;
-            stroke : Black;
-            stroke-width: 1;
         }
         .circ:hover {
             opacity: 100;
-            transition: opacity .2s ease-out;
+            transition: opacity .1s ease-out;
         }
 
     </style>
@@ -29,6 +27,30 @@
         var rows = 19;
         var cols = 19;
         var board = document.querySelector('#board');
+
+        var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        board.appendChild(defs);
+
+        var gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
+        defs.appendChild(gradient);
+        gradient.setAttribute('spreadMethod', 'reflect');
+        gradient.setAttribute('cx', '60%');
+        gradient.setAttribute('cy', '60%');
+        gradient.setAttribute('r', '80%');
+        gradient.setAttribute('fx', '55%');
+        gradient.setAttribute('fy', '55%');
+        gradient.setAttribute('id', 'blackGradient');
+
+        var stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('stop-color', 'gray');
+
+        var stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop2.setAttribute('offset', '60%');
+        stop2.setAttribute('stop-color', 'black');
+
+        gradient.appendChild(stop1);
+        gradient.appendChild(stop2);
 
         // draw board
         var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -87,7 +109,11 @@
                 stone.setAttribute("class", "circ");
                 stone.setAttribute("cx", i * size + size / 2);
                 stone.setAttribute("cy", j * size + size / 2);
-                stone.setAttribute("r", size / 2 - 1);
+                stone.setAttribute("r", size / 2.1);
+                stone.onclick = function(elem) {
+                    elem.target.style.opacity = '100';
+                    console.log(elem.target);
+                }
                 var cell = board.appendChild(stone);
             }
         }
